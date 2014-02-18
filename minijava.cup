@@ -1,27 +1,90 @@
 package se.edstrompartners.komp14;
 
 // Terminals
-terminal            SEMI, ADD, SUB, MUL, DIV;
-terminal            MINUS, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET;
-terminal            CLASS, PUBLIC, STATIC, VOID, MAIN, STRING;
+terminal            empty;
+terminal            SEMI, PLUS, MINUS, TIMES;
+terminal            NOT, LOGICAL_AND, LESS_THAN, NEW, LENGTH;
+terminal            LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, COMMA, DOT;
+terminal            CLASS, PUBLIC, STATIC, VOID, MAIN, STRING, SYSO;
+terminal            IF, ELSE, WHILE, EQUALS, THIS, RETURN;
+terminal            TYPEINT, TYPEBOOL;
 terminal Integer    INTLITERAL;
-terminal Boolean    BOOLLITERAL;
+terminal Boolean    TRUE, FALSE;
 terminal String     IDENT;
 
 // Non terminals
-non terminal        program;
-non terminal        mainClass;
-non terminal        classDecl, classDeclRest;
+non terminal        Program, MainClass;
+non terminal        ClassDecls, ClassDecl, VarDecls, VarDecl, MethodDecls, MethodDecl;
+non terminal        FormalList, FormalRest, Type;
+non terminal        Statements, Statement, Expression, Operation, ExpList, ExpRest;
 
 
 // Grammar
 
-start with program;
+start with Program;
 
-program ::= mainClass classDecl
+Program     ::= MainClass ClassDecls;
 
-mainClass ::= CLASS IDENT LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING IDENT RPAREN LBRACE varDecls statements RBRACE RBRACE
+MainClass   ::= CLASS IDENT LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET IDENT RPAREN LBRACE VarDecls Statements RBRACE RBRACE;
 
-classDecl ::= CLASS IDENT LBRACE varDecls statements RETURN expr SEMI RBRACE
+ClassDecls  ::= ClassDecl ClassDecls
+              | empty;
 
-classDeclRest ::=
+ClassDecl   ::= CLASS IDENT LBRACE VarDecls MethodDecls RBRACE;
+
+VarDecls    ::= VarDecl VarDecls
+              | empty;
+
+VarDecl     ::= Type IDENT SEMI;
+
+MethodDecls ::= MethodDecl MethodDecls
+              | empty;
+
+MethodDecl  ::= PUBLIC Type IDENT LPAREN FormalList RPAREN LBRACE VarDecls Statements RETURN Expression SEMI RBRACE;
+
+FormalList  ::= Type IDENT FormalRest
+              | empty;
+
+FormalRest  ::= COMMA Type IDENT FormalRest
+              | empty;
+
+Type        ::= TYPEINT LBRACKET RBRACKET
+              | TYPEBOOL
+              | TYPEINT
+              | IDENT;
+
+Statements  ::= Statement Statements
+              | empty;
+
+Statement   ::= LBRACE Statements RBRACE
+              | IF LPAREN Expression RPAREN Statement ELSE Statement
+              | WHILE LPAREN Expression RPAREN Statement
+              | SYSO LPAREN Expression RPAREN SEMI
+              | IDENT EQUALS Expression SEMI
+              | IDENT LBRACKET Expression RBRACKET EQUALS Expression SEMI;
+
+Expression  ::= Expression Operation Expression
+              | Expression LBRACKET Expression RBRACKET
+              | Expression DOT LENGTH
+              | Expression DOT IDENT LPAREN ExpList RPAREN
+              | INTLITERAL
+              | TRUE
+              | FALSE
+              | IDENT
+              | THIS
+              | NEW TYPEINT LBRACKET Expression RBRACKET
+              | NEW IDENT LPAREN RPAREN
+              | NOT Expression
+              | LPAREN Expression RPAREN;
+
+Operation   ::= LOGICAL_AND
+              | LESS_THAN
+              | PLUS
+              | MINUS
+              | TIMES;
+
+ExpList     ::= Expression ExpRest
+              | empty;
+
+ExpRest     ::= COMMA Expression ExpRest
+              | empty;

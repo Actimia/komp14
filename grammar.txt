@@ -1,11 +1,11 @@
 Program     -> MainClass ClassDecls
 
-MainClass   -> class id { public static void main ( String [ ] id ) { VarDecls Stmts } }
+MainClass   -> class id { public static void main ( String [ ] id ) { VarDecls Statements } }
 
 ClassDecls  -> ClassDecl ClassDecls
             ->
 
-ClassDecl   -> class id { VarDecls MethodDecl* }
+ClassDecl   -> class id { VarDecls MethodDecls }
 
 VarDecls    -> VarDecl VarDecls
             ->
@@ -15,7 +15,7 @@ VarDecl     -> Type id ;
 MethodDecls -> MethodDecl MethodDecls
             ->
 
-MethodDecl  -> public Type id ( FormalList ) { VarDecls Stmts return Exp ; }
+MethodDecl  -> public Type id ( FormalList ) { VarDecls Statements return Expression ; }
 
 FormalList  -> Type id FormalRest
             ->
@@ -28,38 +28,38 @@ Type        -> int [ ]
             -> int
             -> id
 
-Stmts       -> Stmt Stmts
+Statements  -> Statement Statements
             ->
 
-Stmt        -> { Stmts }
-            -> if ( Exp ) Stmt else Stmt
-            -> while ( Exp ) Stmt
-            -> System.out.println ( Exp ) ;
-            -> id = Exp ;
-            -> id [ Exp ] = Exp ;
+Statement   -> { Statements }
+            -> if ( Expression ) Statement else Statement
+            -> while ( Expression ) Statement
+            -> System.out.println ( Expression ) ;
+            -> id = Expression ;
+            -> id [ Expression ] = Expression ;
 
-Exp         -> Exp Op Exp
-            -> Exp [ Exp ]
-            -> Exp . length
-            -> Exp . id ( ExpList )
-            -> int lit
+Expression  -> Expression Operation Expression
+            -> Expression [ Expression ]
+            -> Expression . length
+            -> Expression . id ( ExpList )
+            -> intlit
             -> true
             -> false
             -> id
             -> this
-            -> new int [ Exp ]
+            -> new int [ Expression ]
             -> new id ( )
-            -> ! Exp
-            -> ( Exp )
+            -> ! Expression
+            -> ( Expression )
 
-Op          -> &&
+Operation   -> &&
             -> <
             -> +
             -> −
             -> *
 
-ExpList     -> Exp ExpRest
+ExpList     -> Expression ExpRest
             ->
 
-ExpRest     -> , Exp ExpRest
+ExpRest     -> , Expression ExpRest
             ->

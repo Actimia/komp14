@@ -23,6 +23,7 @@ public class Lexer {
     }
 
     public Token peek() {
+
         return lookahead;
     }
 
