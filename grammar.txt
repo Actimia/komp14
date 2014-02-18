@@ -1,0 +1,65 @@
+Program     -> MainClass ClassDecls
+
+MainClass   -> class id { public static void main ( String [ ] id ) { VarDecls Stmts } }
+
+ClassDecls  -> ClassDecl ClassDecls
+            ->
+
+ClassDecl   -> class id { VarDecls MethodDecl* }
+
+VarDecls    -> VarDecl VarDecls
+            ->
+
+VarDecl     -> Type id ;
+
+MethodDecls -> MethodDecl MethodDecls
+            ->
+
+MethodDecl  -> public Type id ( FormalList ) { VarDecls Stmts return Exp ; }
+
+FormalList  -> Type id FormalRest
+            ->
+
+FormalRest  -> , Type id FormalRest
+            ->
+
+Type        -> int [ ]
+            -> boolean
+            -> int
+            -> id
+
+Stmts       -> Stmt Stmts
+            ->
+
+Stmt        -> { Stmts }
+            -> if ( Exp ) Stmt else Stmt
+            -> while ( Exp ) Stmt
+            -> System.out.println ( Exp ) ;
+            -> id = Exp ;
+            -> id [ Exp ] = Exp ;
+
+Exp         -> Exp Op Exp
+            -> Exp [ Exp ]
+            -> Exp . length
+            -> Exp . id ( ExpList )
+            -> int lit
+            -> true
+            -> false
+            -> id
+            -> this
+            -> new int [ Exp ]
+            -> new id ( )
+            -> ! Exp
+            -> ( Exp )
+
+Op          -> &&
+            -> <
+            -> +
+            -> −
+            -> *
+
+ExpList     -> Exp ExpRest
+            ->
+
+ExpRest     -> , Exp ExpRest
+            ->

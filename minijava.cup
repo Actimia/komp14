@@ -1,0 +1,27 @@
+package se.edstrompartners.komp14;
+
+// Terminals
+terminal            SEMI, ADD, SUB, MUL, DIV;
+terminal            MINUS, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET;
+terminal            CLASS, PUBLIC, STATIC, VOID, MAIN, STRING;
+terminal Integer    INTLITERAL;
+terminal Boolean    BOOLLITERAL;
+terminal String     IDENT;
+
+// Non terminals
+non terminal        program;
+non terminal        mainClass;
+non terminal        classDecl, classDeclRest;
+
+
+// Grammar
+
+start with program;
+
+program ::= mainClass classDecl
+
+mainClass ::= CLASS IDENT LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING IDENT RPAREN LBRACE varDecls statements RBRACE RBRACE
+
+classDecl ::= CLASS IDENT LBRACE varDecls statements RETURN expr SEMI RBRACE
+
+classDeclRest ::=
