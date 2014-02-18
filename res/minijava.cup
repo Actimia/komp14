@@ -1,4 +1,4 @@
-package se.edstrompartners.komp14;
+package gen;
 
 // Terminals
 terminal            empty;
