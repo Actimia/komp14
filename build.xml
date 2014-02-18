@@ -1,0 +1,39 @@
+<project name="minijava" default="build">
+
+    <property name="src" location="src"/>
+    <property name="bin" location="bin"/>
+    <property name="lib" location="lib"/>
+    <property name="res" location="res"/>
+
+    <taskdef name="cup"
+        classname="java_cup.anttask.CUPTask"
+        classpathref="${lib}"
+    />
+
+    <taskdef name="jflex"
+        classname="jflex.anttask.JFlexTask"
+        classpathref="${lib}"
+    />
+
+    <target name="parser">
+        <cup srcfile="${res}/minijava.cup"
+            destdir="${src}"
+            expect="14"
+        />
+    </target>
+
+    <target name="lexer">
+        <jflex file="${res}/minijava.flex"
+            destdir="${src}"
+            nobak="true"
+        />
+    </target>
+
+    <target name="compile" depends="lexer,parser">
+        <javac srcdir="${src}"
+            destdir="${bin}"
+        />
+
+    </target>
+
+</project>
